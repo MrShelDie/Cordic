@@ -6,14 +6,14 @@ module strobe_gen
     output  out
 );
 
-    reg n_in_reg;
+    reg n_in;
 
     always @(posedge clk or posedge rst)
         if (rst)
-            n_in_reg <= 0;
+            n_in <= 0;
         else
-            n_in_reg <= ~in;
+            n_in <= ~in;
 
-    assign out = in && n_in_reg;
+    assign out = in && n_in;
 
 endmodule
