@@ -1,17 +1,21 @@
+`timescale 1ns / 1ps
+
 module cordic_pipe_stage
 #(
-    parameter NUM_WIDTH = 24,
-    parameter atan      = 0,    // the parameter must be overrided
-    parameter shift		= 0		// the parameter must be overrided
+    parameter NUM_WIDTH     = 24,
+    parameter ATAN          = 0    // the parameter must be overrided
 )
 (
     input                       clk,
     input                       rst,
     input                       enabled,
 
-    input   reg [NUM_WIDTH-1:0] ix,
-    input   reg [NUM_WIDTH-1:0] iy,
-    input   reg [NUM_WIDTH-1:0] iz,    
+    input       [NUM_WIDTH-1:0] ix,
+    input       [NUM_WIDTH-1:0] iy,
+    input       [NUM_WIDTH-1:0] iz,
+
+    input       [NUM_WIDTH-1:0] shifted_x,
+    input       [NUM_WIDTH-1:0] shifted_y,
 
     output  reg [NUM_WIDTH-1:0] ox,
     output  reg [NUM_WIDTH-1:0] oy,
@@ -26,14 +30,14 @@ module cordic_pipe_stage
         end
         else if (enabled) begin
             if (iz[NUM_WIDTH-1]) begin   // check if z negative
-                ox <= ix + (iy >> shift);
-                oy <= iy - (ix >> shift);
-                oz <= iz + atan;
+                ox <= ix + shifted_y;
+                oy <= iy - shifted_x;
+                oz <= iz + ATAN;
             end
             else begin
-                ox <= ix - (iy >> shift);
-                oy <= iy + (ix >> shift);
-                oz <= iz - atan;
+                ox <= ix - shifted_y;
+                oy <= iy + shifted_x;
+                oz <= iz - ATAN;
             end
         end
 

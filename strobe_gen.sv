@@ -1,3 +1,5 @@
+`timescale 1ns / 1ps
+
 module strobe_gen
 (
     input   clk,
@@ -10,10 +12,10 @@ module strobe_gen
 
     always @(posedge clk or posedge rst)
         if (rst)
-            n_in <= 0;
+            n_in <= 1'B0;
         else
             n_in <= ~in;
 
-    assign out = in && n_in;
+    assign out = in & n_in;
 
 endmodule
